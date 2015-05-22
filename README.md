@@ -3,6 +3,7 @@ Template for html app with nodemon, livereload, browserify, coffee
 
 Usage: 
 
+  git checkout -b master
   mkdir dist
   npm install
   make livereload &
