@@ -1,7 +1,8 @@
+include Make.config
 .PHONY: build open
 
 dist = dist
-livereload_port = 45876
+#livereload_port = 45870
 devbin = ./node_modules/.bin
 
 build: app index
