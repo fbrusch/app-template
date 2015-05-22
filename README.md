@@ -10,3 +10,15 @@ Usage:
   make open
   
 Edit index.jade and app.coffee, and you're good to go!
+
+If you want to change something in the template: 
+    
+    git checkout template
+
+    [your modifications]
+
+    [git add + commit]
+
+    git checkout master
+    git rebase template
+
