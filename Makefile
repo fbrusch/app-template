@@ -28,7 +28,7 @@ else
 endif
 
 watch:
-	$(devbin)/nodemon --exec "make build" -e "jade coffee"
+	$(devbin)/nodemon --exec "make build || true" -e "jade coffee"
 
 livereload:
 	$(devbin)/livereload ./dist -p $(livereload_port)
