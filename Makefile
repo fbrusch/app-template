@@ -1,6 +1,8 @@
 include Make.config
 .PHONY: build open
 
+UNAME = $(shell uname)
+
 dist = dist
 #livereload_port = 45870
 devbin = ./node_modules/.bin
@@ -18,8 +20,12 @@ $(dist)/index.html: index.jade
 		"{livereloadUrl:'http://localhost:$(livereload_port)/livereload.js'}" \
 		-P index.jade -o dist
 
-open:
-	open dist/index.html
+open: $(dist)/index.html
+ifeq ($(UNAME), Linux)
+	xdg-open $<
+else
+	open $<
+endif
 
 watch:
 	$(devbin)/nodemon --exec "make build" -e "jade coffee"
