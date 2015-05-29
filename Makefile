@@ -1,5 +1,5 @@
 include Make.config
-.PHONY: build open
+.PHONY: build open init
 
 UNAME = $(shell uname)
 
@@ -11,6 +11,11 @@ build: app index
 
 index: $(dist)/index.html
 app: $(dist)/app.js
+
+init: 
+	git checkout -b master
+	mkdir dist
+	npm install
 
 $(dist)/app.js: app.coffee
 	$(devbin)/browserify --t coffeeify --debug $< -o $@
