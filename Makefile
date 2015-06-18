@@ -3,7 +3,7 @@ include Make.config
 
 UNAME = $(shell uname)
 
-dist = dist
+dist = $(shell pwd)/dist
 #livereload_port = 45870
 devbin = ./node_modules/.bin
 
@@ -15,7 +15,14 @@ app: $(dist)/app.js
 init: 
 	git checkout -b master
 	mkdir dist
-	npm install
+	er run --name homepage-nginx -v $(pwd)
+
+serve:
+	docker run --name $(project_name)-nginx -v $(dist):/usr/share/nginx/html:ro \
+		-e VIRTUAL_HOST=$(project_name).localhost -d nginx
+
+stop-serve:
+	docker stop $(project_name)-nginx
 
 $(dist)/app.js: app.coffee
 	$(devbin)/browserify --t coffeeify --debug $< -o $@
