@@ -15,7 +15,6 @@ app: $(dist)/app.js
 init: 
 	git checkout -b master
 	mkdir dist
-	er run --name homepage-nginx -v $(pwd)
 
 serve:
 	docker run --name $(project_name)-nginx -v $(dist):/usr/share/nginx/html:ro \
