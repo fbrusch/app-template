@@ -21,7 +21,7 @@ old-serve:
 		-e VIRTUAL_HOST=$(project_name).localhost -d nginx
 
 serve:
-	docker-compose -f docker_serve/docker-compose.yml up nginx
+	docker-compose -f docker-serve/docker-compose.yml up nginx
 
 stop-serve:
 	docker stop $(project_name)-nginx
