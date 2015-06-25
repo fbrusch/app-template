@@ -4,7 +4,6 @@ include Make.config
 UNAME = $(shell uname)
 
 dist = $(shell pwd)/dist
-#livereload_port = 45870
 devbin = ./node_modules/.bin
 
 build: app index
@@ -15,6 +14,7 @@ app: $(dist)/app.js
 init: 
 	git checkout -b master
 	mkdir dist
+	npm install
 
 old-serve:
 	docker run --name $(project_name)-nginx -v $(dist):/usr/share/nginx/html:ro \
@@ -30,15 +30,14 @@ $(dist)/app.js: app.coffee
 	$(devbin)/browserify --t coffeeify --debug $< -o $@
 
 $(dist)/index.html: index.jade
-	$(devbin)/jade -O \
-		"{livereloadUrl:'http://localhost:$(livereload_port)/livereload.js'}" \
+	$(devbin)/jade \
 		-P index.jade -o dist
 
 open: $(dist)/index.html
 ifeq ($(UNAME), Linux)
-	xdg-open $<
+	xdg-open "http://$(virtual_host)" 
 else
-	open $<
+	open "http://$(virtual_host)"
 endif
 
 watch:

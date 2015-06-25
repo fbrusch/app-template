@@ -3,10 +3,11 @@ Template for html app with nodemon, livereload, browserify, coffee
 
 Usage: 
 
-    git checkout -b master
-    mkdir dist
+Edit Make.conf and docker-serve/docker-compose.yml to set virtual_host
+
+    make init
     npm install
-    make livereload &
+    make serve (requires docker, docker-compose, and running docker nginx-proxy)
     make watch &
     make open
   
