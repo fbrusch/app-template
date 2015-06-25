@@ -16,9 +16,12 @@ init:
 	git checkout -b master
 	mkdir dist
 
-serve:
+old-serve:
 	docker run --name $(project_name)-nginx -v $(dist):/usr/share/nginx/html:ro \
 		-e VIRTUAL_HOST=$(project_name).localhost -d nginx
+
+serve:
+	docker-compose -f docker_serve/docker-compose.yml up nginx
 
 stop-serve:
 	docker stop $(project_name)-nginx
