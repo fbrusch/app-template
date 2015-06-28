@@ -1,7 +1,7 @@
 include Make.config
 .PHONY: build open init
 
-project_name = ${PWD##*/}
+project_name = $(notdir $(shell pwd))
 UNAME = $(shell uname)
 
 dist = $(shell pwd)/dist
@@ -10,9 +10,11 @@ devbin = ./node_modules/.bin
 docker-serve/docker-compose.yml: docker-serve/docker-compose.yml.template
 	virtual_host=$(virtual_host) envsubst <$< >$@
 
-build: node_modules app index
+build: node_modules app index $(dist)/app.css
 
 index: $(dist)/index.html
+$(dist)/app.css: app.less
+	$(devbin)/lessc $< >$@
 app: $(dist)/app.js
 
 node_modules: package.json
@@ -46,10 +48,10 @@ else
 	open "http://$(virtual_host)"
 endif
 
-watch: node_modules
-	$(devbin)/nodemon --exec "make build || true" -e "jade coffee"
+watch: node_modules 
+	$(devbin)/nodemon --exec "make build || true" -e "less jade coffee"
 
-docker-watch:
+docker-watch: docker-serve/docker-compose.yml 
 	docker-compose -p $(project_name) -f docker-serve/docker-compose.yml up buildenv
 
 livereload:
