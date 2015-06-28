@@ -17,7 +17,6 @@ node_modules: package.json
 init: 
 	git checkout -b master
 	mkdir dist
-	npm install
 
 old-serve:
 	docker run --name $(project_name)-nginx -v $(dist):/usr/share/nginx/html:ro \
