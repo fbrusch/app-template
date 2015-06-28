@@ -6,10 +6,13 @@ UNAME = $(shell uname)
 dist = $(shell pwd)/dist
 devbin = ./node_modules/.bin
 
-build: app index
+build: node_modules app index
 
 index: $(dist)/index.html
 app: $(dist)/app.js
+
+node_modules: package.json
+	npm install
 
 init: 
 	git checkout -b master
@@ -40,11 +43,11 @@ else
 	open "http://$(virtual_host)"
 endif
 
-watch:
+watch: node_modules
 	$(devbin)/nodemon --exec "make build || true" -e "jade coffee"
 
 docker-watch:
-	docker-compose -f docker-serve/docker-compose.yml up buildenv
+	docker-compose -p $(project_name) -f docker-serve/docker-compose.yml up buildenv
 
 livereload:
 	$(devbin)/livereload ./dist -p $(livereload_port)
