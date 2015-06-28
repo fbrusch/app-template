@@ -1,10 +1,14 @@
 include Make.config
 .PHONY: build open init
 
+project_name = ${PWD##*/}
 UNAME = $(shell uname)
 
 dist = $(shell pwd)/dist
 devbin = ./node_modules/.bin
+
+docker-serve/docker-compose.yml: docker-serve/docker-compose.yml.template
+	virtual_host=$(virtual_host) envsubst <$< >$@
 
 build: node_modules app index
 
@@ -22,8 +26,8 @@ old-serve:
 	docker run --name $(project_name)-nginx -v $(dist):/usr/share/nginx/html:ro \
 		-e VIRTUAL_HOST=$(project_name).localhost -d nginx
 
-serve:
-	docker-compose -f docker-serve/docker-compose.yml up nginx
+serve: docker-serve/docker-compose.yml
+	docker-compose -p $(project_name) -f docker-serve/docker-compose.yml up nginx
 
 stop-serve:
 	docker stop $(project_name)-nginx
