@@ -43,6 +43,9 @@ endif
 watch:
 	$(devbin)/nodemon --exec "make build || true" -e "jade coffee"
 
+docker-watch:
+	docker-compose -f docker-serve/docker-compose.yml up buildenv
+
 livereload:
 	$(devbin)/livereload ./dist -p $(livereload_port)
 
